@@ -1,35 +1,39 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import React, {useEffect} from "react";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import {useSelector} from 'react-redux'
+import AuthorizationPage from "./components/AuthorizationPage.tsx";
+import {getAuthStatus} from "./redux/slices/authSlice.ts";
+import MainPage from "./components/MainPage.tsx";
+import Welcome from "./components/Welcome.tsx";
 
-function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const App: React.FC = () => {
+    const navigate = useNavigate()
+    const logSuccess = useSelector(getAuthStatus)
+    useEffect(() => {
+        if (!logSuccess) {
+            navigate('/auth');
+        }
+        else {
+            navigate('/welcome');
+        }
+        // This will run only on the first render and whenever isLoggedIn changes
+    }, [logSuccess]);
+
+    return (
+
+        <Routes>
+            {logSuccess &&
+                <Route path={'/'} element={<MainPage />}>
+                    <Route path={'/welcome'} element={<Welcome/>}/>
+                </Route>
+            }
+
+            <Route path={'/auth'} element={<AuthorizationPage/>}/>
+        </Routes>
+
+    )
 }
 
 export default App
