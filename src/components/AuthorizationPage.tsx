@@ -19,13 +19,11 @@ const AuthorizationPage:React.FC = () => {
     const dispatch = useDispatch()
 
     const onFinish = (values: any) => {
-        console.log(values)
         dispatch(successfulLogin({...values}))
 
     };
 
     const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
     };
 
     return (
