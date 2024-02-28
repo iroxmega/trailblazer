@@ -32,39 +32,33 @@ const items: MenuProps['items'] = [
 ];
 
 const Header: React.FC = () => {
-    // const tablesNames = useSelector(getTablesNames)
+    const tablesNames = useSelector(getTablesNames)
     const {selectedPage, setSelectedPage} = useContext(SelectedPageContext)
     const navigate = useNavigate()
     const dispatch:AppDispatch = useDispatch()
 
-    useEffect(() => {
-        let response = {}
-        async function lmao() {
-             response = await axios.get('http://localhost:5000/api/tables');
-        =
-        lmao()
-        console.log(response.data)
-    }, [])
     const onClick: MenuProps['onClick'] = (e) => {
         setSelectedPage(e.key);
         navigate('/' + selectedPage)
         console.log(selectedPage)
     };
 
+    useEffect(
+        () => {
+            dispatch(fetchTableNames())
+            console.log(tablesNames)
+            }, []
+    )
+
     return (
         <>
             <div className={styles.container}>
                 <h1 className={styles.logo}>TrailBlazer</h1>
                 <Menu className={styles.elements}
-
-
                       onClick={onClick}
                       selectedKeys={[selectedPage]}
                       mode="horizontal"
-                      items={items}
-                      inlineCollapsed={false}/>
-
-
+                      items={items}/>
             </div>
         </>
     )
