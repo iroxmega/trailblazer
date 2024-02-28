@@ -29,7 +29,6 @@ const App: React.FC = () => {
                     <Route path={'/welcome'} element={<Welcome/>}/>
                 </Route>
             }
-
             <Route path={'/auth'} element={<AuthorizationPage/>}/>
         </Routes>
 
